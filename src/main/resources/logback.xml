@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
+	<!-- <appender name="fileAppender" class="ch.qos.logback.core.FileAppender"> 
+		<file>/Users/pelsophanna/Desktop/MSCS/Workspace/apache-tomcat-8.0.30/logs/myLogFile.log</file> 
+		<append>true</append> <encoder> <Pattern> %d{yyyy-MM-dd HH:mm:ss} %-5level 
+		%logger{36} - %msg%n </Pattern> </encoder> </appender> -->
+
+
+
+	<!-- Daily rollover appender that also appends timestamp and rolls over 
+		on startup -->
+	<appender name="fileAppender" 
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>/Users/pelsophanna/Desktop/MSCS/Workspace/apache-tomcat-8.0.30/logs/myLogFile.log
 		</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/Users/pelsophanna/Desktop/MSCS/Workspace/apache-tomcat-8.0.30/logs/myLogFile_%d{yyyyMMdd}.log
+			</fileNamePattern>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="my.package.StartupTimeBasedTriggeringPolicy" />
+		</rollingPolicy>
 		<append>true</append>
 		<encoder>
-			<Pattern>
-				%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n
+			<Pattern> %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n
 			</Pattern>
 		</encoder>
 	</appender>
 
+
+
 	<logger name="org.springframework" level="info" additivity="false">
 		<appender-ref ref="fileAppender" />
 	</logger>
-	
+
 	<logger name="com.hrsystem.aspect" level="debug" additivity="false">
 		<appender-ref ref="fileAppender" />
 	</logger>

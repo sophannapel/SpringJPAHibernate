@@ -14,7 +14,7 @@ public class LoggingAspectImpl implements LoggingAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspectImpl.class);
 	
 	@Override
-	@Before("execution(public com.hrsystem.*.*(..))")
+	@Before("execution(public * com.hrsystem.*.*(..))")
 	public void readRepositoryAdice(JoinPoint joinPoint) {
 		LOGGER.info(joinPoint.toString() + " has been called");
 		LOGGER.info("--------------------------");

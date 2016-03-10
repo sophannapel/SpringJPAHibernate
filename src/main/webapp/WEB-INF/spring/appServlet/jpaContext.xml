@@ -15,10 +15,12 @@
 
 	<!-- create local container -->
 	<!-- ref means to inject the bean -->
+	<!-- Create instance of LocalContainerEntityManagerFactoryBean -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="punit" />
 		<property name="dataSource" ref="dataSource" />
+		<!-- This property configure options specific to JPA provider implementation -->
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<!-- Show the sql that we run behind the scence by hibernate -->
