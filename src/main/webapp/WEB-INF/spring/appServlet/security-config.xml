@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<!-- Make it as default schema -->
+	<!-- xmlns="http://www.springframework.org/schema/security" -->
+
+	<!-- Intercept every url -->
+	<http auto-config="true" use-expressions="true">
+	
+		<!-- allow access to the following pages without logging in -->
+		<intercept-url pattern="/login.html" access="permitAll"/>
+		<intercept-url pattern="/loginFailed.html" access="permitAll"/>
+		<intercept-url pattern="/logout.html" access="permitAll"/>
+		<intercept-url pattern="/403.html" access="permitAll"/>
+		
+		<!-- URL that requestion authorization -->
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+		
+		<!-- To enable basic authentication which is shown as popup page by the browser -->
+		<!-- <http-basic/> -->
+		
+		<!-- .html here we want to route this through spring mvc, it means we make another request to this web 
+			application, then dispatcherServlet will handle this request and routes to controller -->
+		<form-login login-page="/login.html" authentication-failure-url="/loginFailed.html"/>
+		
+		<!-- Logout -->
+		<!-- It means we send another request logout.html, so this will be routed through spring mvc,
+			then this request will be handled by dispatcherServlet -->
+		<logout logout-success-url="/logout.html" />
+		<access-denied-handler error-page="/403.html" />
+	</http>
+
+	<!-- Spring security will take the user input password and calculate the hash value 
+		to compare with the password that we store in md5 format in database -->
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder hash="bcrypt"/>
+			<jdbc-user-service data-source-ref="dataSource" />
+		</authentication-provider>
+	</authentication-manager>
+
+
+</beans:beans>

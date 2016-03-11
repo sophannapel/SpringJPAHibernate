@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,10 @@ public class EmployeeController {
 		model.addAttribute("employeeList", employeeService.getAll());
 		return "addemployee";
 	}
-
+	
+	/* Enable method level security with Spring Security */
+	//to enable only user with role as ROLE_ADMIN to use this method
+	@PreAuthorize("hasRole('ROLE_ADMIN') and hasPermission(#employee, 'addemployee')")
 	@RequestMapping(value = "/addemployee", method = RequestMethod.POST)
 	public String addEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result) {
 		if (result.hasErrors()) {

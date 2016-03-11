@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>    
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -38,10 +39,20 @@
 	<i class="glyphicon glyphicon-flag"><a href="?language=en">English</a>
 		|</i>
 	<i class="glyphicon glyphicon-flag"><a href="?language=zh">Chinese</a></i>
-
+	
+	<p>
+		<span class="glyphicon glyphicon-user"> <sec:authentication property="name" /></span> 
+		<span class="glyphicon glyphicon-off"><a href="j_spring_security_logout">Logout</a></span>
+	</p>
+	
+	
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-6">	
+			
+			<!-- Show the following content if and only if user has authority=ROLE_ADMIN -->
+			<sec:authorize ifAnyGranted="ROLE_ADMIN">
+			
 				<table id="example" class="display" cellspacing="0" width="100%">
 					<thead>
 						<tr>
@@ -58,6 +69,9 @@
 						</tr>
 					</c:forEach>
 				</table>
+				
+				</sec:authorize>
+				
 			</div>
 		</div>
 
